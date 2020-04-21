@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  gogs:
+    container_name: gogs
+    image: gogs/gogs-rpi:latest
+    ports:
+      - '10022:22'
+      - '10080:3000'
+    # environment:
+    #   SOCAT_LINK: 'true' # default: true / <true, false, 1, 0>
+    #   RUN_CROND: 'false' # default: false / <true, false, 1, 0>
+    volumes:
+      - './gogs:/data'
+    depends_on:
+      - postgresdb
+    restart: unless-stopped
+
+  postgresdb:
+    container_name: gogs-postgres
+    image: postgres:12-alpine
+    # ports:
+    #   - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: 'yourSecretPassword'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_DB: 'gogs'
+    volumes:
+      - './postgres:/var/lib/postgresql/data'
+    restart: unless-stopped
+  # adminer:
+  #   image: adminer
+  #   ports:
+  #     - 8080:8080
+  #   restart: unless-stopped
