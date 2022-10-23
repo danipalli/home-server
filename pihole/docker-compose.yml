@@ -1,28 +1,29 @@
-version: '3'
+version: "3.8"
 
-# More info at https://github.com/pi-hole/docker-pi-hole/ and https://docs.pi-hole.net/
+# For documentation see: https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose
+secrets:
+  pihole_web_password:
+    file: ./secrets/pihole_web_password.txt
+
+# For documentation see: https://github.com/pi-hole/docker-pi-hole/ and https://docs.pi-hole.net/
 services:
   pihole:
     container_name: pihole
     image: pihole/pihole:latest
     environment:
-      TZ: 'Europe/Vienna'
-      WEBPASSWORD: 'yourSecretPassword'
-      DNS1: 1.1.1.1
-      DNS2: 1.0.0.1
-      DNSSEC: 'true'
-      ServerIP: 192.168.0.250
-      DNS_BOGUS_PRIV: 'false' # default: true
-      DNS_FQDN_REQUIRED: 'false' # default: true
-      INTERFACE: 'eth0'
-    # CONDITIONAL_FORWARDING: 'false' # default: false
+      TZ: "Europe/Vienna"
+      WEBPASSWORD_FILE: "/run/secrets/pihole_web_password"
+      FTLCONF_LOCAL_IPV4: 192.168.0.250
+      PIHOLE_DNS_: 127.0.0.1#5335
+      DNSSEC: "true"
+      DNS_BOGUS_PRIV: "true"
+      DNS_FQDN_REQUIRED: "true"
+      WEBTHEME: "default-dark"
+      INTERFACE: "eth0"
     volumes:
-      - './etc-pihole/:/etc/pihole/'
-      - './etc-dnsmasq.d/:/etc/dnsmasq.d/'
-    dns:
-      - 127.0.0.1
-      - 1.1.1.1
-    network_mode: 'host' # DHCP needs host mode
+      - "./etc-pihole/:/etc/pihole/"
+      - "./etc-dnsmasq.d/:/etc/dnsmasq.d/"
+    network_mode: "host" # for DHCP
     cap_add:
-      - NET_ADMIN # DHCP needs NET_ADMIN
+      - NET_ADMIN # for DHCP
     restart: unless-stopped
