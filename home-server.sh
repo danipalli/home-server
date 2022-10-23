@@ -167,6 +167,8 @@ if [ "$update" == true ]; then
     printServiceName "$composeFile"
     sudo docker compose -f "$composeFile" up --detach >/dev/null
   done
+
+  echo "Last update: $(date)" > "$BASE_PATH/last-update.log"
 fi
 
 # Shutdown
