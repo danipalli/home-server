@@ -148,17 +148,17 @@ fi
 # Update
 if [ "$update" == true ]; then
   for composeFile in "${composeFiles[@]}"; do
+      printf "\n"
+      printYellowText "Pull new images for "
+      printServiceName "$composeFile"
+      sudo docker compose -f "$composeFile" pull >/dev/null
+    done
+
+  for composeFile in "${composeFiles[@]}"; do
     printf "\n"
     printRedText "Shutdown "
     printServiceName "$composeFile"
     sudo docker compose -f "$composeFile" down >/dev/null
-  done
-
-  for composeFile in "${composeFiles[@]}"; do
-    printf "\n"
-    printYellowText "Pull new images for "
-    printServiceName "$composeFile"
-    sudo docker compose -f "$composeFile" pull >/dev/null
   done
 
   for composeFile in "${composeFiles[@]}"; do
