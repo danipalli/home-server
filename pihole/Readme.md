@@ -20,7 +20,9 @@
 - It is mandatory to configure the same timezone for pi-hole and the underlying server.
   Otherwise, the signature validation for DNS responses fails and pi-hole rejects them with status *Bogus*.
   You can change the servers timezone with `sudo timedatectl set-timezone Europe/Vienna`.
-
+- You need to set up an additional backup DNS server like `1.1.1.1` for your host server.
+  Otherwise, your server can't resolve domains when pi-hole is down. Also initially pi-hole
+  would not be able to start.
 
 ### Documentation
 

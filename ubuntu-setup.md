@@ -55,7 +55,7 @@
          addresses:
            - 192.168.0.250/24
          nameservers:
-           addresses: [127.0.0.1]
+           addresses: [127.0.0.1,1.1.1.1]
          routes:
            - to: default
              via: 192.168.0.1
